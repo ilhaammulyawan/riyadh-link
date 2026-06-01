@@ -1,6 +1,15 @@
 import { Link2, Mail, MapPin, Instagram, Facebook, Youtube } from "lucide-react";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
 export function Footer() {
+  const { settings } = useSiteSettings();
+
+  const socials = [
+    { url: settings.social_instagram, icon: Instagram, label: "Instagram" },
+    { url: settings.social_facebook, icon: Facebook, label: "Facebook" },
+    { url: settings.social_youtube, icon: Youtube, label: "YouTube" },
+  ].filter((s) => s.url);
+
   return (
     <footer className="border-t border-border/60 bg-card">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
@@ -11,18 +20,23 @@ export function Footer() {
                 <Link2 className="h-5 w-5 text-primary-foreground" />
               </div>
               <div className="flex flex-col leading-tight">
-                <span className="text-base font-bold">RSLink</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted-foreground">by Mulyawan</span>
+                <span className="text-base font-bold">{settings.site_name}</span>
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{settings.tagline}</span>
               </div>
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-              Platform URL Shortener modern dan profesional untuk seluruh civitas SMA Riyadhussholihiin.
+              {settings.footer_description}
             </p>
-            <div className="mt-5 flex gap-3">
-              <a href="#" className="rounded-lg border border-border p-2 transition hover:border-primary/40 hover:text-primary"><Instagram className="h-4 w-4" /></a>
-              <a href="#" className="rounded-lg border border-border p-2 transition hover:border-primary/40 hover:text-primary"><Facebook className="h-4 w-4" /></a>
-              <a href="#" className="rounded-lg border border-border p-2 transition hover:border-primary/40 hover:text-primary"><Youtube className="h-4 w-4" /></a>
-            </div>
+            {socials.length > 0 && (
+              <div className="mt-5 flex gap-3">
+                {socials.map((s) => (
+                  <a key={s.label} href={s.url ?? "#"} target="_blank" rel="noreferrer" aria-label={s.label}
+                    className="rounded-lg border border-border p-2 transition hover:border-primary/40 hover:text-primary">
+                    <s.icon className="h-4 w-4" />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           <div>
@@ -38,14 +52,14 @@ export function Footer() {
           <div>
             <h4 className="text-sm font-semibold">Kontak</h4>
             <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" /><span>info@riyadhussholihiin.sch.id</span></li>
-              <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" /><span>SMA Riyadhussholihiin</span></li>
+              {settings.contact_email && <li className="flex items-start gap-2"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" /><span>{settings.contact_email}</span></li>}
+              {settings.contact_address && <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" /><span>{settings.contact_address}</span></li>}
             </ul>
           </div>
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
-          <p>© {new Date().getFullYear()} RSLink by Mulyawan. Seluruh hak cipta dilindungi.</p>
+          <p>{settings.copyright_text} · {new Date().getFullYear()}</p>
           <p>Dibuat dengan ❤ untuk civitas SMA Riyadhussholihiin</p>
         </div>
       </div>
