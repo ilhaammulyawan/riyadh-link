@@ -50,7 +50,8 @@ function AdminSettings() {
     setSaving(true);
     const payload: Record<string, string | null> = {};
     for (const f of FIELDS) payload[f.key] = form[f.key]?.trim() || null;
-    const { error } = await supabase.from("site_settings").update(payload).eq("id", 1);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await supabase.from("site_settings").update(payload as any).eq("id", 1);
     if (error) toast.error(error.message);
     else toast.success("Pengaturan disimpan");
     setSaving(false);

@@ -77,7 +77,7 @@ function AdminLayout() {
               return (
                 <Link
                   key={item.to}
-                  to={item.to}
+                  to={item.to as "/admin"}
                   className={cn(
                     "flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition",
                     active ? "bg-gradient-primary text-primary-foreground shadow-soft" : "text-muted-foreground hover:bg-muted hover:text-foreground"
