@@ -1,17 +1,15 @@
 import { useState } from "react";
-import { ArrowRight, Link2, Sparkles, Copy, Check } from "lucide-react";
+import { ArrowRight, Link2, Sparkles, Copy, Check, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-
-function makeSlug(len = 6) {
-  const chars = "abcdefghijkmnpqrstuvwxyz23456789";
-  let s = "";
-  for (let i = 0; i < len; i++) s += chars[Math.floor(Math.random() * chars.length)];
-  return s;
-}
+import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
+import { makeRandomSlug, normalizeUrl, getShortBase } from "@/lib/links";
+import { Link as RouterLink } from "@tanstack/react-router";
 
 export function Hero() {
+  const { user } = useAuth();
   const [url, setUrl] = useState("");
   const [shortened, setShortened] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -19,25 +17,35 @@ export function Hero() {
 
   const handleShorten = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!url.trim()) return toast.error("Masukkan URL terlebih dahulu");
-    try {
-      new URL(url.startsWith("http") ? url : `https://${url}`);
-    } catch {
-      return toast.error("URL tidak valid");
+    let normalized: string;
+    try { normalized = normalizeUrl(url); } catch { return toast.error("URL tidak valid"); }
+    if (!user) {
+      toast.info("Daftar / masuk untuk menyimpan link permanen");
+      return;
     }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 600));
-    const slug = makeSlug();
-    setShortened(`rslink.id/${slug}`);
+    let slug = makeRandomSlug();
+    // retry up to 3x on slug conflict
+    for (let i = 0; i < 3; i++) {
+      const { data, error } = await supabase
+        .from("links")
+        .insert({ slug, original_url: normalized, user_id: user.id })
+        .select("slug")
+        .single();
+      if (!error && data) { setShortened(`${getShortBase()}${data.slug}`); break; }
+      if (error?.code === "23505") { slug = makeRandomSlug(7); continue; }
+      setLoading(false);
+      return toast.error(error?.message ?? "Gagal membuat link");
+    }
     setLoading(false);
-    toast.success("Link berhasil dipendekkan! (preview)");
+    toast.success("Link berhasil dipendekkan!");
   };
 
   const copy = async () => {
     if (!shortened) return;
-    await navigator.clipboard.writeText(`https://${shortened}`);
+    await navigator.clipboard.writeText(shortened);
     setCopied(true);
-    toast.success("Disalin ke clipboard");
+    toast.success("Disalin");
     setTimeout(() => setCopied(false), 1800);
   };
 
@@ -69,7 +77,7 @@ export function Hero() {
             style={{ animationDelay: "200ms", animationFillMode: "backwards" }}
           >
             <div className="relative flex-1">
-              <Link2 className="pointer-events-none absolute left-3.5 top-1/2 h-4.5 w-4.5 -translate-y-1/2 text-muted-foreground" />
+              <Link2 className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
@@ -90,9 +98,10 @@ export function Hero() {
 
           {shortened && (
             <div className="mx-auto mt-4 flex max-w-2xl animate-fade-up items-center justify-between gap-3 rounded-xl border border-success/30 bg-success/5 px-4 py-3">
-              <span className="truncate text-sm font-medium text-foreground">
-                https://{shortened}
-              </span>
+              <a href={shortened} target="_blank" rel="noreferrer" className="flex min-w-0 items-center gap-2 truncate text-sm font-medium hover:underline">
+                <ExternalLink className="h-4 w-4 shrink-0 text-success" />
+                <span className="truncate">{shortened}</span>
+              </a>
               <Button variant="outline" size="sm" onClick={copy} className="shrink-0">
                 {copied ? <Check className="h-4 w-4 text-success" /> : <Copy className="h-4 w-4" />}
                 {copied ? "Tersalin" : "Salin"}
@@ -100,9 +109,14 @@ export function Hero() {
             </div>
           )}
 
-          <p className="mt-6 text-xs text-muted-foreground">
-            Gratis. Tanpa registrasi untuk uji coba cepat. Daftar untuk fitur lengkap.
-          </p>
+          {!user && (
+            <p className="mt-6 text-xs text-muted-foreground">
+              <RouterLink to="/register" className="font-medium text-primary hover:underline">Daftar gratis</RouterLink>
+              {" "}atau{" "}
+              <RouterLink to="/login" className="font-medium text-primary hover:underline">masuk</RouterLink>
+              {" "}untuk menyimpan dan mengelola link.
+            </p>
+          )}
         </div>
       </div>
     </section>
