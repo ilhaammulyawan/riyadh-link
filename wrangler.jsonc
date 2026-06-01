@@ -2,12 +2,12 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "riyadh-link",
   "compatibility_date": "2026-06-01",
-  "main": ".output/server/index.mjs",
+  "main": "dist/server/server.js", 
   "compatibility_flags": [
     "nodejs_compat"
   ],
   "assets": {
-    "directory": ".output/public"
+    "directory": "dist/client"
   },
   "observability": {
     "enabled": true
