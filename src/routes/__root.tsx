@@ -80,8 +80,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "RSLink — Pemendek URL untuk Civitas SMA Riyadhussholihiin" },
       { name: "twitter:description", content: "Platform URL Shortener modern untuk civitas SMA Riyadhussholihiin. Pendekkan, kelola, dan pantau tautan Anda." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b050fbcf-de75-4c2b-8059-895ec02f35f5/id-preview-da93da52--962b63d8-d6a2-44ec-8679-c98e67d5dff4.lovable.app-1780315963677.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b050fbcf-de75-4c2b-8059-895ec02f35f5/id-preview-da93da52--962b63d8-d6a2-44ec-8679-c98e67d5dff4.lovable.app-1780315963677.png" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e20782d9-fba2-4c75-8369-fdd8787b32ea/id-preview-0534306a--962b63d8-d6a2-44ec-8679-c98e67d5dff4.lovable.app-1780317962895.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e20782d9-fba2-4c75-8369-fdd8787b32ea/id-preview-0534306a--962b63d8-d6a2-44ec-8679-c98e67d5dff4.lovable.app-1780317962895.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
