@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardAnalyticsLinkIdRouteImport } from './routes/dashboard.analytics.$linkId'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -40,41 +41,69 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardAnalyticsLinkIdRoute =
+  DashboardAnalyticsLinkIdRouteImport.update({
+    id: '/analytics/$linkId',
+    path: '/analytics/$linkId',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/dashboard/analytics/$linkId': typeof DashboardAnalyticsLinkIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/dashboard/analytics/$linkId': typeof DashboardAnalyticsLinkIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/dashboard/analytics/$linkId': typeof DashboardAnalyticsLinkIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$slug' | '/dashboard' | '/login' | '/register'
+  fullPaths:
+    | '/'
+    | '/$slug'
+    | '/dashboard'
+    | '/login'
+    | '/register'
+    | '/dashboard/analytics/$linkId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$slug' | '/dashboard' | '/login' | '/register'
-  id: '__root__' | '/' | '/$slug' | '/dashboard' | '/login' | '/register'
+  to:
+    | '/'
+    | '/$slug'
+    | '/dashboard'
+    | '/login'
+    | '/register'
+    | '/dashboard/analytics/$linkId'
+  id:
+    | '__root__'
+    | '/'
+    | '/$slug'
+    | '/dashboard'
+    | '/login'
+    | '/register'
+    | '/dashboard/analytics/$linkId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SlugRoute: typeof SlugRoute
-  DashboardRoute: typeof DashboardRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
 }
@@ -116,13 +145,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/analytics/$linkId': {
+      id: '/dashboard/analytics/$linkId'
+      path: '/analytics/$linkId'
+      fullPath: '/dashboard/analytics/$linkId'
+      preLoaderRoute: typeof DashboardAnalyticsLinkIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
+
+interface DashboardRouteChildren {
+  DashboardAnalyticsLinkIdRoute: typeof DashboardAnalyticsLinkIdRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardAnalyticsLinkIdRoute: DashboardAnalyticsLinkIdRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SlugRoute: SlugRoute,
-  DashboardRoute: DashboardRoute,
+  DashboardRoute: DashboardRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
 }
