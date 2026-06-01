@@ -11,13 +11,13 @@ export const Route = createFileRoute("/admin")({
   component: AdminLayout,
 });
 
-const NAV = [
+const NAV: { to: string; label: string; icon: typeof Shield; exact?: boolean }[] = [
   { to: "/admin", label: "Ikhtisar", icon: Shield, exact: true },
   { to: "/admin/settings", label: "Pengaturan Situs", icon: Settings },
   { to: "/admin/faqs", label: "Kelola FAQ", icon: HelpCircle },
   { to: "/admin/links", label: "Semua Link", icon: LinkIcon },
   { to: "/admin/users", label: "Pengguna & Role", icon: Users },
-] as const;
+];
 
 function AdminLayout() {
   const [state, setState] = useState<"checking" | "ok" | "forbidden">("checking");
