@@ -66,10 +66,7 @@ function RedirectPage() {
   async function go(row: LinkRow) {
     try {
       await supabase.from("link_clicks").insert({ link_id: row.id, ...detectClient() });
-      await supabase.rpc as never; // no-op typing
     } catch { /* ignore analytics failure */ }
-    // Increment click_count best-effort
-    supabase.from("links").update({ click_count: undefined } as never).eq("id", row.id).then(() => {});
     if (row.open_in_new_tab) {
       window.open(row.original_url, "_blank", "noopener,noreferrer");
       navigate({ to: "/" });
