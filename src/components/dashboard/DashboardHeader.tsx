@@ -1,10 +1,23 @@
 import { Link } from "@tanstack/react-router";
-import { Link2, LogOut, BarChart3, LayoutDashboard } from "lucide-react";
+import { Link2, LogOut, BarChart3, LayoutDashboard, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { useEffect, useState } from "react";
 
 export function DashboardHeader({ email }: { email: string }) {
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const { data: sess } = await supabase.auth.getSession();
+      if (!sess.session) return;
+      const { data } = await supabase.from("user_roles").select("role").eq("user_id", sess.session.user.id).eq("role", "admin").maybeSingle();
+      setIsAdmin(!!data);
+    })();
+  }, []);
+
   const signOut = async () => {
     await supabase.auth.signOut();
     toast.success("Berhasil keluar");
@@ -33,10 +46,20 @@ export function DashboardHeader({ email }: { email: string }) {
             <span className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground">
               <BarChart3 className="h-4 w-4" /> Statistik
             </span>
+            {isAdmin && (
+              <Link
+                to="/admin"
+                activeProps={{ className: "bg-primary/10 text-primary" }}
+                className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+              >
+                <Shield className="h-4 w-4" /> Admin
+              </Link>
+            )}
           </nav>
         </div>
         <div className="flex items-center gap-3">
-          <span className="hidden text-sm text-muted-foreground sm:inline">{email}</span>
+          <ThemeToggle className="hidden sm:inline-flex" />
+          <span className="hidden text-sm text-muted-foreground md:inline">{email}</span>
           <Button onClick={signOut} size="sm" variant="outline">
             <LogOut className="h-4 w-4" /> Keluar
           </Button>
