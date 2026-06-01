@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "riyadh-link",
   "compatibility_date": "2026-06-01",
-  "main": ".output/server/index.mjs", // Sesuai dengan output build SSR TanStack Start/Nitro
+  "main": ".output/server/index.mjs",
   "compatibility_flags": [
     "nodejs_compat"
   ],
