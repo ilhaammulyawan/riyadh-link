@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Navbar() {
   const { user, loading } = useAuth();
@@ -34,6 +35,7 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle className="hidden md:inline-flex" />
           {loading ? null : user ? (
             <>
               <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">

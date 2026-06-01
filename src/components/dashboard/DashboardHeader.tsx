@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { Link2, LogOut, BarChart3, LayoutDashboard } from "lucide-react";
+import { Link2, LogOut, BarChart3, LayoutDashboard, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { useEffect, useState } from "react";
 
 export function DashboardHeader({ email }: { email: string }) {
   const signOut = async () => {
