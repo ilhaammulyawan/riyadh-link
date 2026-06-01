@@ -1,10 +1,12 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { Link2, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { createFileRoute } from "@tanstack/react-router";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
+import { QuickShorten } from "@/components/dashboard/QuickShorten";
+import { LinksTable } from "@/components/dashboard/LinksTable";
+import { StatsCards } from "@/components/dashboard/StatsCards";
+import type { LinkRow } from "@/lib/dashboard-types";
+import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — RSLink" }] }),
@@ -12,57 +14,53 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function DashboardPage() {
+  const [userId, setUserId] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [ready, setReady] = useState(false);
+  const [links, setLinks] = useState<LinkRow[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchLinks = useCallback(async (uid: string) => {
+    const { data } = await supabase
+      .from("links")
+      .select("*")
+      .eq("user_id", uid)
+      .order("created_at", { ascending: false });
+    setLinks((data ?? []) as LinkRow[]);
+  }, []);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
+    (async () => {
+      const { data } = await supabase.auth.getSession();
       if (!data.session) {
         window.location.replace("/login");
         return;
       }
+      setUserId(data.session.user.id);
       setEmail(data.session.user.email ?? "");
-      setReady(true);
-    });
-  }, []);
+      await fetchLinks(data.session.user.id);
+      setLoading(false);
+    })();
+  }, [fetchLinks]);
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
-    toast.success("Berhasil keluar");
-    window.location.replace("/");
-  };
-
-  if (!ready) return null;
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border/60 bg-card">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-primary shadow-soft">
-              <Link2 className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <span className="text-base font-bold tracking-tight">RSLink</span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-muted-foreground sm:inline">{email}</span>
-            <Button onClick={signOut} size="sm" variant="outline"><LogOut className="h-4 w-4" /> Keluar</Button>
-          </div>
+      <DashboardHeader email={email} />
+      <main className="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Kelola tautan, pantau klik, dan unduh QR code dari satu tempat.</p>
         </div>
-      </header>
-
-      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <h1 className="text-2xl font-bold">Selamat datang 👋</h1>
-        <p className="mt-1 text-muted-foreground">
-          Dashboard akan dibangun pada Tahap 3 — quick shortener, daftar link, QR Code, edit, dan statistik.
-        </p>
-        <div className="mt-8 rounded-2xl border border-dashed border-border bg-card p-10 text-center">
-          <p className="text-sm text-muted-foreground">
-            Coba pemendek di{" "}
-            <Link to="/" className="font-medium text-primary hover:underline">halaman utama</Link>
-            {" "}— link Anda sudah tersimpan ke akun ini.
-          </p>
-        </div>
+        <StatsCards links={links} />
+        <QuickShorten userId={userId} onCreated={() => fetchLinks(userId)} />
+        <LinksTable links={links} onChanged={() => fetchLinks(userId)} />
       </main>
     </div>
   );
