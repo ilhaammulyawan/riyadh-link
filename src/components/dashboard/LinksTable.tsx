@@ -64,7 +64,7 @@ export function LinksTable({ links, onChanged }: { links: LinkRow[]; onChanged: 
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <a href={`${base}${l.slug}`} target="_blank" rel="noreferrer" className="font-mono text-sm font-semibold text-primary hover:underline">
-                      /{l.slug}
+                      {base.replace(/^https?:\/\//, "").replace(/\/$/, "")}/{l.slug}
                     </a>
                     {!l.is_active && <Badge variant="outline" className="text-xs">Nonaktif</Badge>}
                     {expired && <Badge variant="destructive" className="text-xs">Kedaluwarsa</Badge>}
