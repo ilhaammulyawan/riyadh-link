@@ -67,12 +67,9 @@ function RedirectPage() {
     try {
       await supabase.from("link_clicks").insert({ link_id: row.id, ...detectClient() });
     } catch { /* ignore analytics failure */ }
-    if (row.open_in_new_tab) {
-      window.open(row.original_url, "_blank", "noopener,noreferrer");
-      navigate({ to: "/" });
-    } else {
-      window.location.replace(row.original_url);
-    }
+    // Always redirect in the same tab — auto window.open() on page load is
+    // blocked by browsers as a popup, which previously stranded users on "/".
+    window.location.replace(row.original_url);
   }
 
   const submitPwd = async (e: React.FormEvent) => {
