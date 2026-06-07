@@ -35,6 +35,10 @@ const DEFAULTS: SiteSettings = {
   social_facebook: null,
   social_youtube: null,
   copyright_text: "© RSLink by Mulyawan",
+  credit_prefix: "Build by",
+  credit_link_label: "Mulyawan",
+  credit_link_url: "https://mulyawan.biz.id",
+  credit_suffix: "",
 };
 
 export function useSiteSettings() {
