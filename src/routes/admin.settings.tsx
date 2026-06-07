@@ -27,6 +27,10 @@ const FIELDS: { key: string; label: string; type?: "text" | "textarea"; placehol
   { key: "social_facebook", label: "URL Facebook", placeholder: "https://facebook.com/...", section: "Sosial Media" },
   { key: "social_youtube", label: "URL YouTube", placeholder: "https://youtube.com/...", section: "Sosial Media" },
   { key: "copyright_text", label: "Teks Copyright", section: "Footer & Kontak" },
+  { key: "credit_prefix", label: "Teks Sebelum Nama", placeholder: "Build by", section: "Kredit" },
+  { key: "credit_link_label", label: "Nama (akan menjadi link)", placeholder: "Mulyawan", section: "Kredit" },
+  { key: "credit_link_url", label: "URL Link Nama", placeholder: "https://mulyawan.biz.id", section: "Kredit" },
+  { key: "credit_suffix", label: "Teks Sesudah Nama (opsional)", placeholder: "", section: "Kredit" },
 ];
 
 function AdminSettings() {
