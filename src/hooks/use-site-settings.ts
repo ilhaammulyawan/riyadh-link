@@ -15,6 +15,10 @@ export type SiteSettings = {
   social_facebook: string | null;
   social_youtube: string | null;
   copyright_text: string | null;
+  credit_prefix: string | null;
+  credit_link_label: string | null;
+  credit_link_url: string | null;
+  credit_suffix: string | null;
 };
 
 const DEFAULTS: SiteSettings = {
