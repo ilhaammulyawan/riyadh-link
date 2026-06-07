@@ -168,6 +168,10 @@ export type Database = {
           contact_address: string | null
           contact_email: string | null
           copyright_text: string | null
+          credit_link_label: string | null
+          credit_link_url: string | null
+          credit_prefix: string | null
+          credit_suffix: string | null
           favicon_url: string | null
           footer_description: string | null
           hero_cta: string
@@ -187,6 +191,10 @@ export type Database = {
           contact_address?: string | null
           contact_email?: string | null
           copyright_text?: string | null
+          credit_link_label?: string | null
+          credit_link_url?: string | null
+          credit_prefix?: string | null
+          credit_suffix?: string | null
           favicon_url?: string | null
           footer_description?: string | null
           hero_cta?: string
@@ -206,6 +214,10 @@ export type Database = {
           contact_address?: string | null
           contact_email?: string | null
           copyright_text?: string | null
+          credit_link_label?: string | null
+          credit_link_url?: string | null
+          credit_prefix?: string | null
+          credit_suffix?: string | null
           favicon_url?: string | null
           footer_description?: string | null
           hero_cta?: string
