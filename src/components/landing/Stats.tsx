@@ -1,13 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Link2, MousePointerClick, QrCode, Users, Activity } from "lucide-react";
-
-const items = [
-  { icon: Link2, label: "Total Link Dibuat", value: 12480 },
-  { icon: MousePointerClick, label: "Total Klik", value: 384920 },
-  { icon: QrCode, label: "Total QR Code", value: 3240 },
-  { icon: Users, label: "Total Pengguna", value: 1860 },
-  { icon: Activity, label: "Link Aktif", value: 10230 },
-];
+import { Link2, MousePointerClick, Users, Activity } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
+import { getPublicStats } from "@/lib/public-stats.functions";
 
 function useCountUp(target: number, start: boolean, duration = 1600) {
   const [val, setVal] = useState(0);
@@ -27,7 +22,7 @@ function useCountUp(target: number, start: boolean, duration = 1600) {
   return val;
 }
 
-function StatCard({ icon: Icon, label, value }: { icon: typeof Link2; label: string; value: number }) {
+function StatCard({ icon: Icon, label, value, ready }: { icon: typeof Link2; label: string; value: number; ready: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -35,14 +30,14 @@ function StatCard({ icon: Icon, label, value }: { icon: typeof Link2; label: str
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
-  const count = useCountUp(value, visible);
+  const count = useCountUp(value, visible && ready);
   return (
     <div ref={ref} className="rounded-2xl border border-border/60 bg-card p-6 text-center transition hover:border-primary/30 hover:shadow-soft">
       <div className="mx-auto mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
         <Icon className="h-5 w-5" />
       </div>
       <div className="text-3xl font-bold tracking-tight tabular-nums sm:text-4xl">
-        {count.toLocaleString("id-ID")}
+        {ready ? count.toLocaleString("id-ID") : "—"}
       </div>
       <div className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</div>
     </div>
@@ -50,15 +45,30 @@ function StatCard({ icon: Icon, label, value }: { icon: typeof Link2; label: str
 }
 
 export function Stats() {
+  const fetchStats = useServerFn(getPublicStats);
+  const { data, isSuccess } = useQuery({
+    queryKey: ["public-stats"],
+    queryFn: () => fetchStats(),
+    staleTime: 60_000,
+  });
+
+  const items = [
+    { icon: Link2, label: "Total Link Dibuat", value: data?.totalLinks ?? 0 },
+    { icon: MousePointerClick, label: "Total Klik", value: data?.totalClicks ?? 0 },
+    { icon: Users, label: "Total Pengguna", value: data?.totalUsers ?? 0 },
+    { icon: Activity, label: "Link Aktif", value: data?.activeLinks ?? 0 },
+  ];
+
   return (
     <section id="statistik" className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-semibold uppercase tracking-wider text-primary">Statistik Platform</span>
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Dipercaya civitas sekolah</h2>
+          <p className="mt-3 text-sm text-muted-foreground">Angka diperbarui otomatis dari aktivitas pengguna platform.</p>
         </div>
-        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {items.map((it) => <StatCard key={it.label} {...it} />)}
+        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {items.map((it) => <StatCard key={it.label} {...it} ready={isSuccess} />)}
         </div>
       </div>
     </section>
