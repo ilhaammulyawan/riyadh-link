@@ -60,7 +60,24 @@ export function Footer() {
 
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
           <p>{settings.copyright_text} · {new Date().getFullYear()}</p>
-          <p>Dibuat dengan ❤ untuk civitas SMA Riyadhussholihiin</p>
+          <p>
+            {settings.credit_prefix && <span>{settings.credit_prefix} </span>}
+            {settings.credit_link_label && (
+              settings.credit_link_url ? (
+                <a
+                  href={settings.credit_link_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-semibold text-primary transition hover:underline"
+                >
+                  {settings.credit_link_label}
+                </a>
+              ) : (
+                <span className="font-semibold">{settings.credit_link_label}</span>
+              )
+            )}
+            {settings.credit_suffix && <span> {settings.credit_suffix}</span>}
+          </p>
         </div>
       </div>
     </footer>
