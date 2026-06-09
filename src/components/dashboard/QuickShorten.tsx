@@ -61,19 +61,19 @@ export function QuickShorten({ userId, onCreated }: { userId: string; onCreated:
   };
 
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-6 shadow-soft">
+    <div className="rounded-2xl border border-border/60 bg-card p-4 shadow-soft sm:p-6">
       <div className="mb-4 flex items-center gap-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-primary">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-primary">
           <Sparkles className="h-4 w-4 text-primary-foreground" />
         </div>
-        <div>
+        <div className="min-w-0">
           <h2 className="text-base font-bold">Pendekkan Cepat</h2>
           <p className="text-xs text-muted-foreground">Buat tautan pendek baru dalam hitungan detik.</p>
         </div>
       </div>
       <form onSubmit={submit} className="space-y-3">
-        <div className="grid gap-3 md:grid-cols-[1fr_180px_180px_auto]">
-          <div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_180px_180px_auto]">
+          <div className="sm:col-span-2 lg:col-span-1">
             <Label className="text-xs">URL Asli</Label>
             <Input required value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://contoh.com/halaman-panjang" />
           </div>
@@ -85,8 +85,8 @@ export function QuickShorten({ userId, onCreated }: { userId: string; onCreated:
             <Label className="text-xs">Judul (opsional)</Label>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Brosur PPDB 2026" />
           </div>
-          <div className="flex items-end">
-            <Button type="submit" disabled={loading} className="w-full bg-gradient-primary text-primary-foreground md:w-auto">
+          <div className="flex items-end sm:col-span-2 lg:col-span-1">
+            <Button type="submit" disabled={loading} className="w-full bg-gradient-primary text-primary-foreground lg:w-auto">
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Pendekkan"}
             </Button>
           </div>
