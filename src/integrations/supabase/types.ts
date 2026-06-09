@@ -261,6 +261,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_public_stats: {
+        Args: never
+        Returns: {
+          active_links: number
+          total_clicks: number
+          total_links: number
+          total_users: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
