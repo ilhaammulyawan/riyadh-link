@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link2, MousePointerClick, Users, Activity } from "lucide-react";
-import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { getPublicStats } from "@/lib/public-stats.functions";
+import { supabase } from "@/integrations/supabase/client";
 
 function useCountUp(target: number, start: boolean, duration = 1600) {
   const [val, setVal] = useState(0);
@@ -44,11 +43,22 @@ function StatCard({ icon: Icon, label, value, ready }: { icon: typeof Link2; lab
   );
 }
 
+async function fetchPublicStats() {
+  const { data, error } = await supabase.rpc("get_public_stats");
+  if (error) throw error;
+  const row = Array.isArray(data) ? data[0] : data;
+  return {
+    totalLinks: Number(row?.total_links ?? 0),
+    totalClicks: Number(row?.total_clicks ?? 0),
+    totalUsers: Number(row?.total_users ?? 0),
+    activeLinks: Number(row?.active_links ?? 0),
+  };
+}
+
 export function Stats() {
-  const fetchStats = useServerFn(getPublicStats);
   const { data, isSuccess } = useQuery({
     queryKey: ["public-stats"],
-    queryFn: () => fetchStats(),
+    queryFn: fetchPublicStats,
     staleTime: 60_000,
   });
 
