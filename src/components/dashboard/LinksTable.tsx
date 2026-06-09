@@ -60,10 +60,10 @@ export function LinksTable({ links, onChanged }: { links: LinkRow[]; onChanged: 
           {filtered.map((l) => {
             const expired = l.expires_at && new Date(l.expires_at) < new Date();
             return (
-              <li key={l.id} className="group flex flex-col gap-3 p-4 transition-colors hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between">
+              <li key={l.id} className="group flex flex-col gap-3 p-4 transition-colors hover:bg-muted/30 sm:flex-row sm:items-center sm:gap-4">
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <a href={`${base}${l.slug}`} target="_blank" rel="noreferrer" className="font-mono text-sm font-semibold text-primary hover:underline">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <a href={`${base}${l.slug}`} target="_blank" rel="noreferrer" className="break-all font-mono text-sm font-semibold text-primary hover:underline">
                       {base.replace(/^https?:\/\//, "").replace(/\/$/, "")}/{l.slug}
                     </a>
                     {!l.is_active && <Badge variant="outline" className="text-xs">Nonaktif</Badge>}
@@ -78,33 +78,33 @@ export function LinksTable({ links, onChanged }: { links: LinkRow[]; onChanged: 
                   </a>
                 </div>
 
-                <div className="flex items-center gap-3 sm:flex-col sm:items-end sm:gap-1">
-                  <div className="text-right">
+                <div className="flex items-center justify-between gap-2 sm:flex-col sm:items-end sm:justify-center sm:gap-1">
+                  <div className="text-left sm:text-right">
                     <p className="text-lg font-bold tabular-nums">{l.click_count.toLocaleString("id-ID")}</p>
                     <p className="text-[10px] uppercase tracking-wide text-muted-foreground">klik</p>
                   </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-1">
-                  <Button size="icon" variant="ghost" onClick={() => copy(l.slug)} title="Salin">
-                    <Copy className="h-4 w-4" />
-                  </Button>
-                  <Button size="icon" variant="ghost" onClick={() => setQr(l)} title="QR Code">
-                    <QrCode className="h-4 w-4" />
-                  </Button>
-                  <Button size="icon" variant="ghost" asChild title="Statistik">
-                    <Link to="/dashboard/analytics/$linkId" params={{ linkId: l.id }}>
-                      <BarChart3 className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                  <Button size="icon" variant="ghost" onClick={() => setEdit(l)} title="Edit">
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button size="icon" variant="ghost" onClick={() => setDel(l)} title="Hapus" className="text-destructive hover:bg-destructive/10 hover:text-destructive">
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  <div className="flex flex-wrap items-center gap-0.5 sm:gap-1">
+                    <Button size="icon" variant="ghost" onClick={() => copy(l.slug)} title="Salin">
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                    <Button size="icon" variant="ghost" onClick={() => setQr(l)} title="QR Code">
+                      <QrCode className="h-4 w-4" />
+                    </Button>
+                    <Button size="icon" variant="ghost" asChild title="Statistik">
+                      <Link to="/dashboard/analytics/$linkId" params={{ linkId: l.id }}>
+                        <BarChart3 className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button size="icon" variant="ghost" onClick={() => setEdit(l)} title="Edit">
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button size="icon" variant="ghost" onClick={() => setDel(l)} title="Hapus" className="text-destructive hover:bg-destructive/10 hover:text-destructive">
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </li>
+
             );
           })}
         </ul>
