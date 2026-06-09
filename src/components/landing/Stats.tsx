@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link2, MousePointerClick, Users, Activity } from "lucide-react";
-import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { getPublicStats } from "@/lib/public-stats.functions";
+import { supabase } from "@/integrations/supabase/client";
 
 function useCountUp(target: number, start: boolean, duration = 1600) {
   const [val, setVal] = useState(0);
@@ -44,11 +43,29 @@ function StatCard({ icon: Icon, label, value, ready }: { icon: typeof Link2; lab
   );
 }
 
+async function fetchPublicStats() {
+  const [linksRes, usersRes, activeRes, clicksRes] = await Promise.all([
+    supabase.from("links").select("*", { count: "exact", head: true }),
+    supabase.from("profiles").select("*", { count: "exact", head: true }),
+    supabase.from("links").select("*", { count: "exact", head: true }).eq("is_active", true),
+    supabase.from("links").select("click_count"),
+  ]);
+  const totalClicks = (clicksRes.data ?? []).reduce(
+    (s, r: { click_count: number | null }) => s + (r.click_count ?? 0),
+    0,
+  );
+  return {
+    totalLinks: linksRes.count ?? 0,
+    totalClicks,
+    totalUsers: usersRes.count ?? 0,
+    activeLinks: activeRes.count ?? 0,
+  };
+}
+
 export function Stats() {
-  const fetchStats = useServerFn(getPublicStats);
   const { data, isSuccess } = useQuery({
     queryKey: ["public-stats"],
-    queryFn: () => fetchStats(),
+    queryFn: fetchPublicStats,
     staleTime: 60_000,
   });
 
