@@ -44,21 +44,14 @@ function StatCard({ icon: Icon, label, value, ready }: { icon: typeof Link2; lab
 }
 
 async function fetchPublicStats() {
-  const [linksRes, usersRes, activeRes, clicksRes] = await Promise.all([
-    supabase.from("links").select("*", { count: "exact", head: true }),
-    supabase.from("profiles").select("*", { count: "exact", head: true }),
-    supabase.from("links").select("*", { count: "exact", head: true }).eq("is_active", true),
-    supabase.from("links").select("click_count"),
-  ]);
-  const totalClicks = (clicksRes.data ?? []).reduce(
-    (s, r: { click_count: number | null }) => s + (r.click_count ?? 0),
-    0,
-  );
+  const { data, error } = await supabase.rpc("get_public_stats");
+  if (error) throw error;
+  const row = Array.isArray(data) ? data[0] : data;
   return {
-    totalLinks: linksRes.count ?? 0,
-    totalClicks,
-    totalUsers: usersRes.count ?? 0,
-    activeLinks: activeRes.count ?? 0,
+    totalLinks: Number(row?.total_links ?? 0),
+    totalClicks: Number(row?.total_clicks ?? 0),
+    totalUsers: Number(row?.total_users ?? 0),
+    activeLinks: Number(row?.active_links ?? 0),
   };
 }
 
