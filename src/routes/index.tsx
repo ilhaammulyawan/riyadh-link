@@ -10,9 +10,9 @@ import { Footer } from "@/components/landing/Footer";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "RSLink by Mulyawan — Pemendek URL untuk Civitas SMA Riyadhussholihiin" },
+      { title: "RSLink - SMA RIYADHUSSHOLIHIIN — Pemendek URL untuk Civitas SMA Riyadhussholihiin" },
       { name: "description", content: "Platform URL Shortener modern dengan QR Code, password, analitik, dan kategori link untuk seluruh civitas SMA Riyadhussholihiin." },
-      { property: "og:title", content: "RSLink by Mulyawan" },
+      { property: "og:title", content: "RSLink - SMA RIYADHUSSHOLIHIIN" },
       { property: "og:description", content: "Pendekkan, kelola, dan pantau link Anda dengan mudah." },
     ],
   }),

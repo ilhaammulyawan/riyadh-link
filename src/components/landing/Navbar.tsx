@@ -33,7 +33,7 @@ export function Navbar() {
           </div>
           <div className="flex min-w-0 flex-col leading-tight">
             <span className="truncate text-base font-bold tracking-tight">RSLink</span>
-            <span className="hidden text-[10px] uppercase tracking-wider text-muted-foreground sm:block">by Mulyawan</span>
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">SMA RIYADHUSSHOLIHIIN</span>
           </div>
         </Link>
 

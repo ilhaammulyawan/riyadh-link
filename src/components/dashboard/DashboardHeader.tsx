@@ -34,7 +34,10 @@ export function DashboardHeader({ email }: { email: string }) {
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-primary shadow-soft">
               <Link2 className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="text-base font-bold tracking-tight">RSLink</span>
+            <div className="flex min-w-0 flex-col leading-tight">
+              <span className="truncate text-base font-bold tracking-tight">RSLink</span>
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">SMA RIYADHUSSHOLIHIIN</span>
+            </div>
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
             <Link

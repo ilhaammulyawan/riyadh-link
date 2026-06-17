@@ -22,7 +22,7 @@ export type SiteSettings = {
 };
 
 const DEFAULTS: SiteSettings = {
-  site_name: "RSLink by Mulyawan",
+  site_name: "RSLink - SMA RIYADHUSSHOLIHIIN",
   tagline: "Platform URL Shortener untuk Civitas SMA Riyadhussholihiin",
   meta_description: "Pendekkan, kelola, dan pantau link Anda dengan mudah.",
   hero_headline: "Pendekkan, Kelola, dan Pantau Link Anda dengan Mudah",
@@ -34,7 +34,7 @@ const DEFAULTS: SiteSettings = {
   social_instagram: null,
   social_facebook: null,
   social_youtube: null,
-  copyright_text: "© RSLink by Mulyawan",
+  copyright_text: "© RSLink - SMA RIYADHUSSHOLIHIIN",
   credit_prefix: "Build by",
   credit_link_label: "Mulyawan",
   credit_link_url: "https://mulyawan.biz.id",
