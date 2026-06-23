@@ -48,6 +48,13 @@ export function DashboardHeader({ email }: { email: string }) {
             >
               <LayoutDashboard className="h-4 w-4" /> Link Saya
             </Link>
+            <Link
+              to="/dashboard/panduan"
+              activeProps={{ className: "bg-primary/10 text-primary" }}
+              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+            >
+              <BookOpen className="h-4 w-4" /> Panduan
+            </Link>
             <span className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground">
               <BarChart3 className="h-4 w-4" /> Statistik
             </span>
