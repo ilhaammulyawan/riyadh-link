@@ -6,6 +6,7 @@ import { QuickShorten } from "@/components/dashboard/QuickShorten";
 import { LinksTable } from "@/components/dashboard/LinksTable";
 import { StatsCards } from "@/components/dashboard/StatsCards";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import type { LinkRow } from "@/lib/dashboard-types";
 import { Loader2, BookOpen, ArrowRight } from "lucide-react";
 
