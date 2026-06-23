@@ -59,6 +59,24 @@ function DashboardPage() {
           <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
           <p className="mt-1 text-sm text-muted-foreground">Kelola tautan, pantau klik, dan unduh QR code dari satu tempat.</p>
         </div>
+        <Card className="border-primary/20 bg-primary/5">
+          <CardContent className="flex flex-col items-start justify-between gap-4 p-4 sm:flex-row sm:items-center">
+            <div className="flex items-start gap-3 sm:items-center">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <BookOpen className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="font-medium text-foreground">Baru di RSLink?</p>
+                <p className="text-sm text-muted-foreground">Baca buku petunjuk untuk memahami cara memendekkan link, QR Code, dan statistik.</p>
+              </div>
+            </div>
+            <Button asChild variant="outline" className="shrink-0 bg-card">
+              <Link to="/dashboard/panduan">
+                Buka Panduan <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
         <StatsCards links={links} />
         <QuickShorten userId={userId} onCreated={() => fetchLinks(userId)} />
         <LinksTable links={links} onChanged={() => fetchLinks(userId)} />
