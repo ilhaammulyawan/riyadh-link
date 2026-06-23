@@ -6,8 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowLeft, Link2, QrCode, BarChart3, Lock, Edit3, Trash2, Copy, ExternalLink, Lightbulb, ShieldCheck, MousePointerClick } from "lucide-react";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Link2, QrCode, BarChart3, Lock, Edit3, Trash2, Copy, ExternalLink, Lightbulb, ShieldCheck, MousePointerClick, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/panduan")({
   head: () => ({ meta: [{ title: "Panduan Pengguna — RSLink" }] }),
