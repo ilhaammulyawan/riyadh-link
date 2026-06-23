@@ -1,12 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { QuickShorten } from "@/components/dashboard/QuickShorten";
 import { LinksTable } from "@/components/dashboard/LinksTable";
 import { StatsCards } from "@/components/dashboard/StatsCards";
+import { Card, CardContent } from "@/components/ui/card";
 import type { LinkRow } from "@/lib/dashboard-types";
-import { Loader2 } from "lucide-react";
+import { Loader2, BookOpen, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — RSLink" }] }),
