@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Link2, LogOut, BarChart3, LayoutDashboard, Shield, Menu } from "lucide-react";
+import { Link2, LogOut, BarChart3, LayoutDashboard, Shield, Menu, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { supabase } from "@/integrations/supabase/client";
