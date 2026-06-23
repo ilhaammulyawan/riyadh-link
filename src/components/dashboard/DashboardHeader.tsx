@@ -95,6 +95,13 @@ export function DashboardHeader({ email }: { email: string }) {
                 >
                   <LayoutDashboard className="h-4 w-4" /> Link Saya
                 </Link>
+                <Link
+                  to="/dashboard/panduan"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted"
+                >
+                  <BookOpen className="h-4 w-4" /> Panduan
+                </Link>
                 {isAdmin && (
                   <Link
                     to="/admin"
