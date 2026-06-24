@@ -109,7 +109,7 @@ function PanduanPage() {
                     <li>Masuk ke <strong className="text-foreground">Dashboard</strong> melalui menu di atas.</li>
                     <li>Temukan formulir <strong className="text-foreground">Buat Link Pendek</strong>.</li>
                     <li>Masukkan URL panjang Anda, misalnya: <code className="rounded bg-muted px-1 py-0.5 text-xs">https://drive.google.com/xxxx</code>.</li>
-                    <li>(Opsional) Isi <strong className="text-foreground">Slug kustom</strong> jika Anda ingin URL seperti <code className="rounded bg-muted px-1 py-0.5 text-xs">rslinks.lovable.app/nama-acara</code>.</li>
+                    <li>(Opsional) Isi <strong className="text-foreground">Slug kustom</strong> jika Anda ingin URL seperti <code className="rounded bg-muted px-1 py-0.5 text-xs">s.smariyadhussholihiin.sch.id/nama-acara</code>.</li>
                     <li>(Opsional) Pilih <strong className="text-foreground">Kategori</strong> agar link tersusun rapi.</li>
                     <li>Klik tombol <strong className="text-foreground">Pendekkan</strong>.</li>
                     <li>Link pendek Anda akan muncul di tabel dan siap dibagikan.</li>
