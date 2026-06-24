@@ -11,10 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as DashboardPanduanRouteImport } from './routes/dashboard.panduan'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
@@ -33,11 +33,6 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -53,15 +48,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
 const DashboardPanduanRoute = DashboardPanduanRouteImport.update({
-  id: '/panduan',
-  path: '/panduan',
-  getParentRoute: () => DashboardRoute,
+  id: '/dashboard/panduan',
+  path: '/dashboard/panduan',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
@@ -85,16 +85,15 @@ const AdminFaqsRoute = AdminFaqsRouteImport.update({
 } as any)
 const DashboardAnalyticsLinkIdRoute =
   DashboardAnalyticsLinkIdRouteImport.update({
-    id: '/analytics/$linkId',
-    path: '/analytics/$linkId',
-    getParentRoute: () => DashboardRoute,
+    id: '/dashboard/analytics/$linkId',
+    path: '/dashboard/analytics/$linkId',
+    getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
   '/admin': typeof AdminRouteWithChildren
-  '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/admin/faqs': typeof AdminFaqsRoute
@@ -103,12 +102,12 @@ export interface FileRoutesByFullPath {
   '/admin/users': typeof AdminUsersRoute
   '/dashboard/panduan': typeof DashboardPanduanRoute
   '/admin/': typeof AdminIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/analytics/$linkId': typeof DashboardAnalyticsLinkIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
-  '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/admin/faqs': typeof AdminFaqsRoute
@@ -117,6 +116,7 @@ export interface FileRoutesByTo {
   '/admin/users': typeof AdminUsersRoute
   '/dashboard/panduan': typeof DashboardPanduanRoute
   '/admin': typeof AdminIndexRoute
+  '/dashboard': typeof DashboardIndexRoute
   '/dashboard/analytics/$linkId': typeof DashboardAnalyticsLinkIdRoute
 }
 export interface FileRoutesById {
@@ -124,7 +124,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
   '/admin': typeof AdminRouteWithChildren
-  '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/admin/faqs': typeof AdminFaqsRoute
@@ -133,6 +132,7 @@ export interface FileRoutesById {
   '/admin/users': typeof AdminUsersRoute
   '/dashboard/panduan': typeof DashboardPanduanRoute
   '/admin/': typeof AdminIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/analytics/$linkId': typeof DashboardAnalyticsLinkIdRoute
 }
 export interface FileRouteTypes {
@@ -141,7 +141,6 @@ export interface FileRouteTypes {
     | '/'
     | '/$slug'
     | '/admin'
-    | '/dashboard'
     | '/login'
     | '/register'
     | '/admin/faqs'
@@ -150,12 +149,12 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/dashboard/panduan'
     | '/admin/'
+    | '/dashboard/'
     | '/dashboard/analytics/$linkId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$slug'
-    | '/dashboard'
     | '/login'
     | '/register'
     | '/admin/faqs'
@@ -164,13 +163,13 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/dashboard/panduan'
     | '/admin'
+    | '/dashboard'
     | '/dashboard/analytics/$linkId'
   id:
     | '__root__'
     | '/'
     | '/$slug'
     | '/admin'
-    | '/dashboard'
     | '/login'
     | '/register'
     | '/admin/faqs'
@@ -179,6 +178,7 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/dashboard/panduan'
     | '/admin/'
+    | '/dashboard/'
     | '/dashboard/analytics/$linkId'
   fileRoutesById: FileRoutesById
 }
@@ -186,9 +186,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SlugRoute: typeof SlugRoute
   AdminRoute: typeof AdminRouteWithChildren
-  DashboardRoute: typeof DashboardRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  DashboardPanduanRoute: typeof DashboardPanduanRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardAnalyticsLinkIdRoute: typeof DashboardAnalyticsLinkIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -205,13 +207,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -235,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -244,10 +246,10 @@ declare module '@tanstack/react-router' {
     }
     '/dashboard/panduan': {
       id: '/dashboard/panduan'
-      path: '/panduan'
+      path: '/dashboard/panduan'
       fullPath: '/dashboard/panduan'
       preLoaderRoute: typeof DashboardPanduanRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/users': {
       id: '/admin/users'
@@ -279,10 +281,10 @@ declare module '@tanstack/react-router' {
     }
     '/dashboard/analytics/$linkId': {
       id: '/dashboard/analytics/$linkId'
-      path: '/analytics/$linkId'
+      path: '/dashboard/analytics/$linkId'
       fullPath: '/dashboard/analytics/$linkId'
       preLoaderRoute: typeof DashboardAnalyticsLinkIdRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -305,38 +307,16 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
-interface DashboardRouteChildren {
-  DashboardPanduanRoute: typeof DashboardPanduanRoute
-  DashboardAnalyticsLinkIdRoute: typeof DashboardAnalyticsLinkIdRoute
-}
-
-const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardPanduanRoute: DashboardPanduanRoute,
-  DashboardAnalyticsLinkIdRoute: DashboardAnalyticsLinkIdRoute,
-}
-
-const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
-  DashboardRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SlugRoute: SlugRoute,
   AdminRoute: AdminRouteWithChildren,
-  DashboardRoute: DashboardRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  DashboardPanduanRoute: DashboardPanduanRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardAnalyticsLinkIdRoute: DashboardAnalyticsLinkIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
