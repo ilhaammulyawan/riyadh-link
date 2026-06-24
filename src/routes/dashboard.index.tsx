@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import type { LinkRow } from "@/lib/dashboard-types";
 import { Loader2, BookOpen, ArrowRight } from "lucide-react";
 
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute("/dashboard/")({
   head: () => ({ meta: [{ title: "Dashboard — RSLink" }] }),
   component: DashboardPage,
 });
